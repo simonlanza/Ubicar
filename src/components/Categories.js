@@ -2,17 +2,18 @@ import React from "react";
 import CardCategories from "./CardCategories";
 import { useState, useEffect } from "react";
 import { CategoriesContainer, CardContainer } from "../styles/CategoriesStyles";
+import CatData from "../data/categories.json";
 
 const Categories = ({ handleCategory }) => {
-  const [categories, setCategories] = useState([]);
-  useEffect(() => {
+  const [categories, setCategories] = useState(CatData);
+/*   useEffect(() => {
     const request = async () => {
       const response = await fetch(`http://13.59.92.254:8080/categoria/listar`);
       const result = await response.json();
       setCategories(result);
     };
     request();
-  }, []);
+  }, []); */
   return (
     <CategoriesContainer>
       <h2>Buscar por tipo</h2>

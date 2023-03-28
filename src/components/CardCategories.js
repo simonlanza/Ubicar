@@ -6,9 +6,9 @@ const CardCategories = ({ category }) => {
   return (
     <>
     <CategoryCard>
-        <CategoryImage src={category.imagenCategoria.urlImg} alt={category.titulo} />
-      <h3>{category.titulo}</h3>
-      <p>807.105 carros</p>
+        <CategoryImage src={category.img} alt={category.caption} />
+      <h3>{category.caption}</h3>
+      <p>{category.total} autos</p>
     </CategoryCard>
     </>
   );

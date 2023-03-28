@@ -15,12 +15,12 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { BsCalendarCheck } from "react-icons/bs";
 import { BsFillPinMapFill } from "react-icons/bs";
-import { Icon } from "@iconify/react";
+import citiesData from "../data/cities.json";
 
 const Searcher = ( {setCity} ) => {
-  const [cities, setCities] = useState([{}]);
+  const [cities, setCities] = useState(citiesData);
   const [selectedCity, setSelectedCity] = useState(null);
-  useEffect(() => {
+  /* useEffect(() => {
     const request = async () => {
       const response = await fetch(`http://13.59.92.254:8080/ciudad`);
       const result = await response.json();
@@ -28,6 +28,7 @@ const Searcher = ( {setCity} ) => {
     };
     request();
   },[]);
+  */
   const [state, setState] = useState([
     {
       startDate: new Date(),
@@ -36,7 +37,6 @@ const Searcher = ( {setCity} ) => {
     },
   ]);
   const [showCalendar, setshowCalendar] = useState(false);
-  const updatedCities = [...cities].sort((a, b) => a.id - b.id);
   return (
     <SearchContainer>
       <h1>La forma mas facil y segura de rentar tu carro</h1>
@@ -51,9 +51,9 @@ const Searcher = ( {setCity} ) => {
             const value = e.target.value;
             setSelectedCity(value)}} required>
             <option value="S">Recogida</option>
-            {updatedCities.map((city, index) => (
-              <option key={index} value={city.localidad}>
-                {city.localidad + " , " + city.provincia}
+            {cities.map((city, index) => (
+              <option key={index} value={city.name}>
+                {city.name + " , " + city.value}
               </option>
             ))}
           </SearchSelect>
@@ -62,9 +62,9 @@ const Searcher = ( {setCity} ) => {
           <BsFillPinMapFill className="icon" />
           <SearchSelect required>
           <option value="S">Devolucion</option>
-            {updatedCities.map((city, index) => (
-              <option key={index} value={city.localidad}>
-                {city.localidad + " , " + city.provincia}
+            {cities.map((city, index) => (
+              <option key={index} value={city.name}>
+                {city.name + " , " + city.value}
               </option>
             ))}
           </SearchSelect>

@@ -2,11 +2,12 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Card from "./Card";
 import { ListC, ListDiv, ListH3 } from "../styles/ListStyles";
+import cars from "../data/cars.json";
 
 const List = ({selectedCity,selectedCategory, cat}) => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(cars);
   const [title, setTitle] = useState("Recomendaciones")
-  useEffect(() => {
+/*   useEffect(() => {
     let apiProducts = [];
     const request = async () => {
       const response = await fetch(`http://13.59.92.254:8080/producto/listar`);
@@ -28,14 +29,18 @@ const List = ({selectedCity,selectedCategory, cat}) => {
         setTitle(`Autos ${cat}`)
       } else return setProducts(apiProducts);
     })
-  }, [selectedCategory, selectedCity, cat]);
-  console.log(products)
+  }, [selectedCategory, selectedCity, cat]); */
+  useEffect(() => {
+      const filteredProducts = cars.filter(car => car.category === selectedCategory?.caption);
+      setProducts(filteredProducts);
+      setTitle(`Autos ${cat}`)
+  }, [selectedCategory])
   return (
     <ListDiv>
-      <ListH3>{title}</ListH3>
+      <ListH3>{selectedCategory && title}</ListH3>
       <ListC>
-        {products && products.sort((a, b) => a.id - b.id).map((product) => (
-          <Card key={product.id} product={product} images={product.imagen} />
+        {selectedCategory && products?.map((product) => (
+          <Card key={product.id} product={product} images={product.img} />
         ))}
       </ListC>
     </ListDiv>

@@ -8,8 +8,8 @@ const Home = () => {
   const [title, setTitle] = useState("");
   const [selectedCity, setSelectedCity] = useState(null);
   const handleCategory = (category) => {
-    setSelectedCategory(category.id);
-    setTitle(category.titulo);
+    setSelectedCategory(category);
+    setTitle(category.caption);
   };
   return (
     <div>
