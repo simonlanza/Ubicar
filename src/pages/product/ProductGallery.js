@@ -16,14 +16,18 @@ const ProductGallery = ({
   current,
   handleClose,
   setCurrentIndex,
+  mainImg,
 }) => {
+  const arrayImgObj = [{ id: 0, img: mainImg }, ...arrayImg];
+
   const handleArrow = () => {
-    if (current === arrayImg.length - 1) {
+    if (current === 4) {
       setCurrentIndex(0);
     } else {
       setCurrentIndex(current + 1);
     }
   };
+
   return (
     <GalleryContainer>
       <GalleryItem>
@@ -31,17 +35,17 @@ const ProductGallery = ({
           <div>
             <MainImageContainer>
               <GalleryButton onClick={handleClose}>X</GalleryButton>
-              <MainImage src={arrayImg[current].urlImg} alt="product" />
+              <MainImage src={arrayImgObj[current].img} alt="product" />
               <ArrowButton onClick={() => handleArrow()}>{`>`}</ArrowButton>
             </MainImageContainer>
             <MyP>{current + 1 + "/5"}</MyP>
             <Carrousel>
-              {arrayImg.map(
+              {arrayImgObj.map(
                 (pic, index) =>
                   index !== current && (
                     <CarrouselImg
                       onClick={() => setCurrentIndex(index)}
-                      src={pic.urlImg}
+                      src={pic.img}
                       alt="product"
                       key={index}
                     />

@@ -15,6 +15,8 @@ import {
 import arrow from "../../assets/arrow.png";
 import Calendar from "react-calendar";
 import "./calendarStyles.css";
+import { useParams } from "react-router-dom";
+import cars from "../../data/cars.json";
 
 const Reserve = () => {
   const getWindowSize = () => {
@@ -33,12 +35,13 @@ const Reserve = () => {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, []);
+  const { id } = useParams();
   return (
     <ReserveContainer>
       <HeaderContainer>
         <LHeader>
-          <p>P category</p>
-          <h1>p title</h1>
+          <p>{cars[id].category}</p>
+          <h1>{cars[id].title}</h1>
         </LHeader>
         <RHeader>
           <Link to="/">
@@ -117,12 +120,11 @@ const Reserve = () => {
         </Schedule>
         <Detail>
           <h2 className="htop">Detalle de la reserva</h2>
-          <img src="" alt="auto" />
+          <img src={cars[id].img} alt="auto" />
           <div>
-            <p className="pcategory">cat</p>
-            <h2 className="hbottom">title</h2>
-            <p className="pstars">stars</p>
-            <p className="plocation">direction</p>
+            <p className="pcategory">{cars[id].category}</p>
+            <h2 className="hbottom">{cars[id].title}</h2>
+            <p className="plocation">{cars[id].location}</p>
           </div>
           <div>
             <p className="paccion">Recogida</p>
@@ -132,7 +134,7 @@ const Reserve = () => {
             <p className="paccion">Entrega</p>
             <p className="plugar">Lugar</p>
           </div>
-          <button>Confirmar reserva</button>
+          <button className="hbutton">Confirmar reserva</button>
         </Detail>
       </BodyContainer>
     </ReserveContainer>

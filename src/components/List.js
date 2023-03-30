@@ -4,8 +4,8 @@ import Card from "./Card";
 import { ListC, ListDiv, ListH3 } from "../styles/ListStyles";
 import cars from "../data/cars.json";
 
-const List = ({selectedCity,selectedCategory, cat}) => {
-  const [products, setProducts] = useState(cars);
+const List = ({selectedCategory, cat}) => {
+  const [products, setProducts] = useState([]);
   const [title, setTitle] = useState("Recomendaciones")
 /*   useEffect(() => {
     let apiProducts = [];
@@ -34,14 +34,19 @@ const List = ({selectedCity,selectedCategory, cat}) => {
       const filteredProducts = cars.filter(car => car.category === selectedCategory?.caption);
       setProducts(filteredProducts);
       setTitle(`Autos ${cat}`)
-  }, [selectedCategory])
+  }, [selectedCategory, cat])
   return (
     <ListDiv>
-      <ListH3>{selectedCategory && title}</ListH3>
+      <ListH3>{title}</ListH3>
       <ListC>
-        {selectedCategory && products?.map((product) => (
+        { selectedCategory ? 
+        products.map((product) => (
           <Card key={product.id} product={product} images={product.img} />
-        ))}
+        )) :
+        cars.map((product) => (
+          <Card key={product.id} product={product} images={product.img} />
+        ))
+        }
       </ListC>
     </ListDiv>
   );

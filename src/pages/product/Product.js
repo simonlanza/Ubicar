@@ -25,7 +25,11 @@ import ProductGallery from "./ProductGallery";
 import Calendar from "react-calendar";
 import "./calendarStyles.css";
 import { Rating } from "react-simple-star-rating";
-const Product = ({ images, product, policy }) => {
+import cars from "../../data/cars.json";
+import carsImages from "../../data/carsImages.json";
+import { ModalContainer, ModalItem } from "../../styles/ModalNoApi";
+
+const Product = ({ id }) => {
   const getWindowSize = () => {
     const { innerWidth, innerHeight } = window;
     return { innerWidth, innerHeight };
@@ -34,7 +38,6 @@ const Product = ({ images, product, policy }) => {
   const [windowSize, setWindowSize] = useState(getWindowSize());
   const [showModal, setShowModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-
   useEffect(() => {
     if (showModal) {
       document.body.style.overflow = "hidden";
@@ -42,6 +45,15 @@ const Product = ({ images, product, policy }) => {
       document.body.style.removeProperty("overflow");
     }
   }, [showModal]);
+
+  const [reserveFail, setReserveFail] = useState(false);
+  useEffect(() => {
+    if (reserveFail) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.removeProperty("overflow");
+    }
+  }, [reserveFail]);
 
   useEffect(() => {
     function handleWindowResize() {
@@ -62,17 +74,15 @@ const Product = ({ images, product, policy }) => {
   const hanldeRating = (rate) => {
     setRating(rate);
   };
-  const updatedImg = [...images].sort((a, b) => a.id - b.id);
-  updatedImg.pop();
   return (
     <ProductContainer>
       <HeaderContainer>
         <LHeader>
-          <p>{product.categoria && product.categoria.titulo}</p>
-          <h1>{product && product.titulo}</h1>
+          <p>{cars[id].category}</p>
+          <h1>{cars[id].title}</h1>
           <div>
             <BsFillPinMapFill />
-            <p>{product && product.ciudad && product.ciudad.localidad}</p>
+            <p>{cars[id].location}</p>
           </div>
         </LHeader>
         <RHeader>
@@ -91,36 +101,40 @@ const Product = ({ images, product, policy }) => {
       </HeaderContainer>
       {showModal && (
         <ProductGallery
-          arrayImg={updatedImg}
+          mainImg={cars[id].img}
+          arrayImg={carsImages}
           current={currentIndex}
           handleClose={() => setShowModal(false)}
           setCurrentIndex={setCurrentIndex}
         />
       )}
       <ImageContainer>
-        {updatedImg.map((pic, index) => (
-          <div
-            className={index === 0 ? "main-image" : "image"}
-            onClick={() => handleModal(index)}
-            key={index}
-          >
-            <img src={pic.urlImg} alt={pic.titulo} />
-          </div>
-        ))}
+        <div className="main-image" onClick={() => handleModal(0)}>
+          <img src={cars[id].img} alt="foto auto" />
+        </div>
+        {!showModal &&
+          carsImages.map((pic, index) => (
+            <div
+              className="image"
+              onClick={() => handleModal(index)}
+              key={index}
+            >
+              <img src={pic.img} alt="foto auto" />
+            </div>
+          ))}
       </ImageContainer>
       <DescriptionContainer>
         <h2>Disfruta un automóvil pensado para tus necesidades</h2>
-        <p>{product && product.descripcion}</p>
+        <p>{cars[id].description}</p>
       </DescriptionContainer>
       <FeaturesContainer>
         <h2>¿Qué ofrece este auto?</h2>
         <div>
-          git
           <p>gps</p>
-          <p>automaticp</p>
+          <p>automatico</p>
           <p>parking</p>
-          <p>feature</p>
-          <p>feature</p>
+          <p>parlantes</p>
+          <p>bluetooth</p>
         </div>
       </FeaturesContainer>
       <MyH2>Fechas disponibles</MyH2>
@@ -133,7 +147,29 @@ const Product = ({ images, product, policy }) => {
         <CalendarSection>
           <CalendarItem>
             <h3>Agregá tus fechas de viaje para obtener precios exactos</h3>
-            <button>Iniciar reserva</button>
+            <button
+              onClick={() => {
+                setReserveFail(true);
+              }}
+            >
+              Iniciar reserva
+            </button>
+            {reserveFail && (
+              <ModalContainer>
+                <ModalItem>
+                  <button onClick={() => setReserveFail(false)}>X</button>
+                  <h1>Ooops!</h1>
+                  <h2>Hemos encontrado un error</h2>
+                  <div>
+                    <p>Los servicios de la API no se encuentran activos</p>
+                    <p>
+                      Se deshabilita la generacion de nuevas reservas online.
+                    </p>
+                    <p>Haz click <Link to={`/reserve/${id}`}>aqui</Link>si desea visualizar la pagina "Reservas"</p>
+                  </div>
+                </ModalItem>
+              </ModalContainer>
+            )}
           </CalendarItem>
         </CalendarSection>
       </CalendarContainer>
@@ -142,24 +178,12 @@ const Product = ({ images, product, policy }) => {
         <h2>Qué tenés que saber</h2>
         <FooterItemContainer>
           <FooterItem>
-            <h4>
-              {policy[0].titulo === undefined ? "loading" : policy[0].titulo}
-            </h4>
-            <p>
-              {policy[0].descripcion === undefined
-                ? "loading"
-                : policy[0].descripcion}
-            </p>
+            <h4>politica del auto titulo</h4>
+            <p>politica del auto descripcion</p>
           </FooterItem>
           <FooterItem>
-            <h4>
-              {policy[1].titulo === undefined ? "loading" : policy[1].titulo}
-            </h4>
-            <p>
-              {policy[1].descripcion === undefined
-                ? "loading"
-                : policy[1].descripcion}
-            </p>
+            <h4>politica del auto titulo</h4>
+            <p>politica del auto descripcion</p>
           </FooterItem>
           <FooterItem>
             <h4>Cancelacion</h4>
